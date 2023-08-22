@@ -1,6 +1,6 @@
-use actix_web::{get,web,App,HttpServer,HttpResponse,Responder,Result};
-use serde::{Serialize};
+use actix_web::{get, web, App, HttpResponse, HttpServer, Responder, Result};
 use env_logger::Env;
+use serde::Serialize;
 
 mod handlers;
 mod models;
@@ -29,8 +29,8 @@ async fn not_found_error() -> Result<HttpResponse> {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let events_db=repository::database::Database::new();    
-    let app_data=web::Data::new(events_db);
+    let events_db = repository::database::Database::new();
+    let app_data = web::Data::new(events_db);
 
     env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
     HttpServer::new(move || {
@@ -42,8 +42,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(actix_web::middleware::Logger::default())
             .default_service(web::route().to(not_found_error))
     })
-    .bind(("127.0.0.1",8080))?
+    .bind(("0.0.0.0", 8080))?
     .run()
     .await
-
 }
