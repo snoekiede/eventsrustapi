@@ -1,5 +1,5 @@
 use actix_web::{web,get,post,delete,put,HttpResponse};
-use crate::{models::event::{Event,NewEvent},repository::{database::Database}};
+use crate::{models::event::{Event,NewEvent},repository::database::Database};
 
 
 #[get("/events")]
