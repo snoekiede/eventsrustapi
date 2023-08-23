@@ -4,9 +4,10 @@ use dotenv::dotenv;
 
 
 use crate::models::event::{Event,NewEvent};
-use crate::repository::schema::events::dsl::*;
+use crate::models::schema::events::dsl::*;
 
 pub type DBPool = r2d2::Pool<ConnectionManager<PgConnection>>;
+
 
 pub struct Database {
     pool: DBPool,
@@ -16,11 +17,13 @@ impl Database {
     pub fn new() -> Self {
         dotenv().ok();
         let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+        
         let manager = ConnectionManager::<PgConnection>::new(database_url);
-        let pool: DBPool = r2d2::Pool::builder()
-            .build(manager)
-            .expect("Failed to create pool.");
-        Database { pool }
+        let result = r2d2::Pool::builder()
+            .build(manager);
+            //.expect("Failed to create pool.");
+        
+        Database { pool: result.unwrap() }
     }
 
     pub fn get_events(&self) -> Vec<Event> {
