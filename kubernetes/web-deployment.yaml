@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: web
+          image: iedesnoek/rustevents:v5
+          imagePullPolicy: IfNotPresent
+
+          env:
+            - name: "DATABASE_URL"
+              valueFrom:
+                configMapKeyRef:
+                  key: DATABASE_URL
+                  name: db-secret-credentials
+            
+
