@@ -1,6 +1,10 @@
 use actix_web::{get, web, App, HttpResponse, HttpServer, Responder, Result};
 use env_logger::Env;
 use serde::Serialize;
+use diesel_migrations::{EmbeddedMigrations, MigrationHarness};
+#[macro_use]
+extern crate diesel_migrations;
+
 
 mod handlers;
 mod models;
@@ -12,6 +16,9 @@ pub struct Response {
     status: String,
     message: String,
 }
+
+type DB=diesel::pg::Pg;
+const MIGRATIONS:EmbeddedMigrations=embed_migrations!();
 
 #[get("/health")]
 async fn health() -> impl Responder {
@@ -28,10 +35,18 @@ async fn not_found_error() -> Result<HttpResponse> {
     }))
 }
 
+fn run_migrations(connection: &mut impl MigrationHarness<DB>) {
+    let _=connection.run_pending_migrations(MIGRATIONS);
+}   
+
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+
     let events_db = repository::database::Database::new();
+    run_migrations(&mut events_db.pool.get().unwrap());
     let app_data = web::Data::new(events_db);
+    
 
     env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
     HttpServer::new(move || {
