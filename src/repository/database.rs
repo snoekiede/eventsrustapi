@@ -13,9 +13,7 @@ pub struct Database {
 
 
 
-impl Database {
-    
-
+impl Database { 
     pub fn new() -> Self {
         dotenv().ok();
         let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
@@ -43,7 +41,6 @@ impl Database {
     }
 
     pub fn create_event(&self,event:NewEvent)->Result<Event,diesel::result::Error>{
-
         diesel::insert_into(events).values(&event).get_result(&mut self.pool.get().unwrap())
     }
 
