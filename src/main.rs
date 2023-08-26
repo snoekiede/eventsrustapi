@@ -56,7 +56,7 @@ async fn main() -> std::io::Result<()> {
             .service(health)
             .default_service(web::route().to(not_found_error))
             .wrap(actix_web::middleware::Logger::default())
-            .default_service(web::route().to(not_found_error))
+            
     })
     .bind(("0.0.0.0", 8080))?
     .run()
