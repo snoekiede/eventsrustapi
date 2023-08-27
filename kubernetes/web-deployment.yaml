@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: iedesnoek/rustevents:45
+          image: <your dockerhub username>/eventsrust:latest
           imagePullPolicy: IfNotPresent
 
           env:
