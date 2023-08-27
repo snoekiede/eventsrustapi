@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: iedesnoek/rustevents:v5
+          image: iedesnoek/rustevents:45
           imagePullPolicy: IfNotPresent
 
           env:
