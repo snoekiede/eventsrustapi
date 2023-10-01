@@ -16,7 +16,6 @@ spec:
         - name: web
           image: <your docker hub user name>/<image name>:<image tag>
           imagePullPolicy: IfNotPresent
-
           env:
             - name: "DATABASE_URL"
               valueFrom:
