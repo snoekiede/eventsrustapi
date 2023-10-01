@@ -14,9 +14,8 @@ spec:
     spec:
       containers:
         - name: web
-          image: <your dockerhub username>/eventsrust:latest
+          image: <your docker hub user name>/<image name>:<image tag>
           imagePullPolicy: IfNotPresent
-
           env:
             - name: "DATABASE_URL"
               valueFrom:
